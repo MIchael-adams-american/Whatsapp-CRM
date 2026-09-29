@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>My CRM — AI Lead Management &amp; Follow-ups</title>
+<meta name="description" content="My CRM turns a Google Sheet of leads into a simple AI-powered lead management and follow-up dashboard." />
+<meta name="theme-color" content="#2BAE66" />
+<meta name="color-scheme" content="light" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232BAE66'/%3E%3Cpath d='M18 44V20h6l8 13 8-13h6v24h-6V31l-6 10h-4l-6-10v13z' fill='%23fff'/%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232BAE66'/%3E%3Cpath d='M18 44V20h6l8 13 8-13h6v24h-6V31l-6 10h-4l-6-10v13z' fill='%23fff'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+
+<!-- ============ Inline icon sprite (no external requests) ============ -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true" focusable="false">
+  <symbol id="i-dashboard" viewBox="0 0 24 24"><path d="M4 13h6V4H4v9Zm0 7h6v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z"/></symbol>
+  <symbol id="i-leads" viewBox="0 0 24 24"><path d="M16 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm-8 .5A3.5 3.5 0 1 0 4.5 8 3.5 3.5 0 0 0 8 11.5Zm0 2C5.4 13.5 1 14.7 1 17.2V20h10v-2.8c0-1 .4-1.9 1.1-2.6A9.6 9.6 0 0 0 8 13.5Zm8 0a9 9 0 0 0-3 .5 3.9 3.9 0 0 1 1 2.6V20h10v-2.5c0-2.6-4.4-3.9-8-4Z"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M7 2v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7Zm12 8v10H5V10h14Z"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-5v-1l-1.5-1.7V10a5.5 5.5 0 0 0-4.1-5.3V4a1.4 1.4 0 0 0-2.8 0v.7A5.5 5.5 0 0 0 6.5 10v4.3L5 16v1Z"/></symbol>
+  <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M12 2l1.9 5.1L19 9l-5.1 1.9L12 16l-1.9-5.1L5 9l5.1-1.9L12 2Zm7 11 .9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9L19 13ZM5 14l.8 2.2L8 17l-2.2.8L5 20l-.8-2.2L2 17l2.2-.8L5 14Z"/></symbol>
+  <symbol id="i-megaphone" viewBox="0 0 24 24"><path d="M20 4v16l-6-4H7a3 3 0 0 1-3-3v-2a3 3 0 0 1 3-3h7l6-4Zm-9 13.5A2.5 2.5 0 0 0 13.5 15H11v2.5Z"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M12 8a4 4 0 1 0 4 4 4 4 0 0 0-4-4Zm9 4a7.9 7.9 0 0 0-.1-1.2l2-1.5-2-3.4-2.3 1a8 8 0 0 0-2-1.2L16.3 3h-4l-.4 2.5a8 8 0 0 0-2 1.2l-2.3-1-2 3.4 2 1.5a8.2 8.2 0 0 0 0 2.4l-2 1.5 2 3.4 2.3-1a8 8 0 0 0 2 1.2l.4 2.5h4l.4-2.5a8 8 0 0 0 2-1.2l2.3 1 2-3.4-2-1.5A7.9 7.9 0 0 0 21 12Z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><path d="M15.5 14h-.8l-.3-.3a6.5 6.5 0 1 0-.7.7l.3.3v.8l5 5 1.5-1.5-5-5Zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14Z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5Z"/></symbol>
+  <symbol id="i-sync" viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6a6 6 0 0 1 6 6 6 6 0 0 1-1.1 3.4l1.5 1.5A8 8 0 0 0 20 12a8 8 0 0 0-8-8Zm0 14a6 6 0 0 1-6-6 6 6 0 0 1 1.1-3.4L5.6 7.1A8 8 0 0 0 4 12a8 8 0 0 0 8 8v3l4-4-4-4v3Z"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1l-2.2 2.2Z"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M12 3C6.5 3 2 6.7 2 11.3c0 2.6 1.5 4.9 3.8 6.4L5 22l4.3-2.3c.9.2 1.8.3 2.7.3 5.5 0 10-3.8 10-8.4S17.5 3 12 3Z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 16H8V7h11v14Z"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12 19 6.4Z"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="M9.5 6 8 7.5 12.5 12 8 16.5 9.5 18l6-6-6-6Z"/></symbol>
+  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="M14.5 6 16 7.5 11.5 12l4.5 4.5-1.5 1.5-6-6 6-6Z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m9 16.2-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4L9 16.2Z"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 2 1 21h22L12 2Zm1 15h-2v-2h2v2Zm0-4h-2V9h2v4Z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm1 11h-6v-2h4V6h2v7Z"/></symbol>
+  <symbol id="i-fire" viewBox="0 0 24 24"><path d="M12 2s5 4.5 5 9a5 5 0 0 1-10 0c0-1.6.7-3 1.5-4C8 9 9 10 9 10c0-3 3-8 3-8Zm-4 13.5A4.5 4.5 0 0 0 12 22a6 6 0 0 0 6-6c0-1.6-.5-3-1.2-4.2A5.4 5.4 0 0 1 12 17a5.4 5.4 0 0 1-4-3.5Z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M6 7h12v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Zm3-5h6l1 2h4v2H4V4h4l1-2Z"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M3 17.2V21h3.8L18 9.8 14.2 6 3 17.2ZM20.7 7.3a1 1 0 0 0 0-1.4l-2.6-2.6a1 1 0 0 0-1.4 0L15 5l3.8 3.8 1.9-1.5Z"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 16 7 11h3V4h4v7h3l-5 5Zm-7 4h14v-2H5v2Z"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="m12 4 5 5h-3v6h-4V9H7l5-5ZM5 18h14v2H5v-2Z"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M3.9 12a3.1 3.1 0 0 1 3.1-3.1h4V7H7a5 5 0 0 0 0 10h4v-1.9H7A3.1 3.1 0 0 1 3.9 12Zm3.6 1h9v-2h-9v2Zm5.5-6h-1.9v1.9H13a3.1 3.1 0 0 1 0 6.2h-1.9V17H13a5 5 0 0 0 0-10Z"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18v2l-7 7v6l-4 2v-8L3 7V5Z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-3.3 0-8 1.7-8 5v3h16v-3c0-3.3-4.7-5-8-5Z"/></symbol>
+  <symbol id="i-sheet" viewBox="0 0 24 24"><path d="M4 2h11l5 5v15H4V2Zm10 1.5V8h4.5L14 3.5ZM7 11v2h10v-2H7Zm0 4v2h10v-2H7Z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 1 4 4v7c0 5.1 3.4 9.8 8 11 4.6-1.2 8-5.9 8-11V4l-8-3Zm0 10.9h6c-.5 3.6-2.8 6.9-6 8V12H6V6l6-2.2v8.1Z"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20h16v2H2V2h2v18Zm3-3V9h3v8H7Zm5 0V5h3v12h-3Zm5 0v-6h3v6h-3Z"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M12 6a6 6 0 0 1 5.2 3H15v2h6V5h-2v2.2A8 8 0 0 0 4 12h2a6 6 0 0 1 6-6Zm6 6a6 6 0 0 1-11.2 3H9v-2H3v6h2v-2.2A8 8 0 0 0 20 12h-2Z"/></symbol>
+  <symbol id="i-wand" viewBox="0 0 24 24"><path d="m3 21 2-2 12.5-12.5-2-2L3 17v4Zm14.5-16.5 2 2 1.6-1.6a1.4 1.4 0 0 0 0-2l-.6-.6a1.4 1.4 0 0 0-2 0l-1 2.2ZM19 12l.8 2.2L22 15l-2.2.8L19 18l-.8-2.2L16 15l2.2-.8L19 12Z"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 3v2h3.6l-9.3 9.3 1.4 1.4L19 6.4V10h2V3h-7ZM5 5h5V3H3v18h18v-7h-2v5H5V5Z"/></symbol>
+</svg>
+
+<a class="skip-link" href="#view">Skip to content</a>
+
+<div id="app" class="app" data-ready="false">
+  <!-- ================= Sidebar (desktop) ================= -->
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <div class="sidebar__brand">
+      <span class="brand-mark" aria-hidden="true">M</span>
+      <div class="brand-text">
+        <strong>My CRM</strong>
+        <small id="brandSub">Lead &amp; Follow-up Manager</small>
+      </div>
+    </div>
+
+    <nav class="nav" id="mainNav">
+      <a class="nav__item" href="#/dashboard" data-route="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-dashboard"/></svg><span>Dashboard</span></a>
+      <a class="nav__item" href="#/leads" data-route="leads"><svg class="icon" aria-hidden="true"><use href="#i-leads"/></svg><span>Leads</span><span class="nav__count" data-count="leads" hidden></span></a>
+      <a class="nav__item" href="#/followups" data-route="followups"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span>Follow-ups</span><span class="nav__count nav__count--warn" data-count="overdue" hidden></span></a>
+      <a class="nav__item" href="#/notifications" data-route="notifications"><svg class="icon" aria-hidden="true"><use href="#i-bell"/></svg><span>Notifications</span><span class="nav__count nav__count--warn" data-count="notifications" hidden></span></a>
+      <a class="nav__item" href="#/insights" data-route="insights"><svg class="icon" aria-hidden="true"><use href="#i-sparkles"/></svg><span>AI Insights</span></a>
+      <a class="nav__item" href="#/campaigns" data-route="campaigns"><svg class="icon" aria-hidden="true"><use href="#i-megaphone"/></svg><span>Campaigns</span></a>
+      <a class="nav__item" href="#/settings" data-route="settings"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg><span>Settings</span></a>
+    </nav>
+
+    <div class="sidebar__footer">
+      <div class="data-source" id="dataSourceChip" title="Where your leads come from">
+        <svg class="icon" aria-hidden="true"><use href="#i-sheet"/></svg>
+        <div>
+          <strong id="dataSourceLabel">Demo data</strong>
+          <small id="dataSourceSub">Not connected to Google Sheets</small>
+        </div>
+      </div>
+      <button class="btn btn--ghost btn--block" type="button" data-action="sync-now" title="Pull the latest rows from your Google Sheet">
+        <svg class="icon" aria-hidden="true"><use href="#i-sync"/></svg> Sync Now
+      </button>
+    </div>
+  </aside>
+
+  <!-- ================= Main column ================= -->
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn topbar__menu" type="button" data-action="toggle-sidebar" aria-label="Open navigation" aria-expanded="false">
+        <svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg>
+      </button>
+
+      <div class="topbar__title">
+        <h1 id="pageTitle">My CRM</h1>
+        <p id="pageSubtitle" class="muted"></p>
+      </div>
+
+      <form class="search" role="search" id="globalSearchForm">
+        <label class="sr-only" for="globalSearch">Search leads</label>
+        <svg class="icon search__icon" aria-hidden="true"><use href="#i-search"/></svg>
+        <input id="globalSearch" name="q" type="search" placeholder="Search name, phone, course, city… or &quot;overdue&quot;" autocomplete="off" spellcheck="false" />
+        <button class="icon-btn search__clear" type="button" data-action="clear-search" aria-label="Clear search" hidden>
+          <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
+        </button>
+      </form>
+
+      <div class="topbar__actions">
+        <button class="btn btn--primary" type="button" data-action="add-lead">
+          <svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg><span class="btn__label">Add Lead</span>
+        </button>
+        <button class="icon-btn notification-bell" type="button" data-action="go-notifications" aria-label="Open notifications">
+          <svg class="icon" aria-hidden="true"><use href="#i-bell"/></svg>
+          <span class="badge-dot" data-count="notifications" hidden></span>
+        </button>
+      </div>
+    </header>
+
+    <div id="offlineBanner" class="banner banner--warn" hidden>
+      <svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg>
+      <div><strong>You are offline.</strong> My CRM is showing the last data loaded on this device. Sync will resume when the connection returns.</div>
+    </div>
+
+    <main id="view" class="view" tabindex="-1">
+      <div class="loading-block" aria-live="polite">
+        <div class="skeleton skeleton--title"></div>
+        <div class="skeleton-row">
+          <div class="skeleton skeleton--card"></div>
+          <div class="skeleton skeleton--card"></div>
+          <div class="skeleton skeleton--card"></div>
+        </div>
+        <p class="muted center">Loading My CRM…</p>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <span>My CRM · <span id="footerSource">Demo mode</span></span>
+      <span id="footerSync" class="muted"></span>
+      <span class="footer__links">
+        <a href="#/settings">Settings</a> · <a href="./docs/GOOGLE_SHEETS_SETUP.md" target="_blank" rel="noopener">Sheet setup guide</a> · <a href="./docs/GEMINI_API_KEY.md" target="_blank" rel="noopener">Gemini key guide</a>
+      </span>
+    </footer>
+  </div>
+
+  <!-- ================= Mobile bottom navigation ================= -->
+  <nav class="bottom-nav" aria-label="Mobile navigation">
+    <a href="#/dashboard" data-route="dashboard"><svg class="icon" aria-hidden="true"><use href="#i-dashboard"/></svg><span>Home</span></a>
+    <a href="#/leads" data-route="leads"><svg class="icon" aria-hidden="true"><use href="#i-leads"/></svg><span>Leads</span></a>
+    <a href="#/followups" data-route="followups"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span>Follow-ups</span></a>
+    <a href="#/notifications" data-route="notifications"><svg class="icon" aria-hidden="true"><use href="#i-bell"/></svg><span>Alerts</span></a>
+    <a href="#/settings" data-route="settings"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg><span>More</span></a>
+  </nav>
+
+  <div class="scrim" id="scrim" hidden></div>
+</div>
+
+<!-- Portals -->
+<div id="drawer-root"></div>
+<div id="modal-root"></div>
+<div id="toast-root" class="toast-root" role="status" aria-live="polite"></div>
+
+<noscript>
+  <div class="noscript">
+    <h2>JavaScript is required</h2>
+    <p>My CRM runs entirely in your browser. Please enable JavaScript to use the dashboard, lead profiles and AI features.</p>
+  </div>
+</noscript>
+
+<script type="module" src="./js/app.js"></script>
+</body>
+</html>

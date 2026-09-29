@@ -1,0 +1,27 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Dependencies (not needed to run the app — it is a static site)
+node_modules/
+package-lock.json
+
+# Local secrets / config you must never commit
+.env
+.env.*
+*.local
+config.local.js
+
+# Build / deploy output
+dist/
+out/
+.vercel
+.netlify
+coverage/
+
+# Logs
+*.log
+npm-debug.log*

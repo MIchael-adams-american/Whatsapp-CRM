@@ -1,0 +1,21 @@
+{
+  "name": "my-crm",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "My CRM — a simple AI-powered lead management and follow-up CRM for leads stored in Google Sheets.",
+  "scripts": {
+    "start": "npx --yes serve . -l 4173",
+    "dev": "npx --yes serve . -l 4173",
+    "test": "node tests/run-tests.mjs",
+    "test:dom": "node tests/dom.test.mjs"
+  },
+  "keywords": [
+    "crm",
+    "google-sheets",
+    "gemini",
+    "lead-management",
+    "follow-up"
+  ],
+  "license": "MIT"
+}
